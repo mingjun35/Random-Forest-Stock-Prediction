@@ -35,8 +35,6 @@ Headline numbers for every variant tested. See `PROJECT_SYNTHESIS.md` for contex
 
 **The catch:** this window was a straight-up bull market. Any trend-following strategy was going to look good. That's why Section 2 matters.
 
----
-
 ## 2. Walk-forward across 3 historical folds
 
 Instead of one time window, test across 3 different historical periods including a bear market. If a strategy only works in bull markets, this exposes it.
@@ -61,8 +59,6 @@ Folds:
 **Step 7e (confluence filter)** — Mean Sharpe 0.70 looks okay, but worst fold lost 21.8%. The filter made the bear market worse. During 2021-22, "all signals agree" setups were bull-trap patterns that got crushed.
 
 **In plain English:** every strategy that looked great in Section 1 fell apart when tested across different market conditions. The single-window numbers were influenced by the bull-market, not a real edge.
-
----
 
 ## 3. PEAD alternative strategy (Step 9)
 
@@ -91,8 +87,6 @@ So why did it still lose to SPY by 157%? **Opportunity cost.** PEAD only trades 
 
 The lesson: a strategy can "work" in the sense of being right most of the time, and still lose badly if being out of the market during a bull run. It shows opportunity costs far outweighs clever gains. Time in the market is always better than timing the market.
 
----
-
 ## 4. CV AUC progression
 
 AUC (Area under the Curve) = how well the model ranks winners over losers. 0.50 is a coin flip. 0.60 is strong. For stocks, anything above 0.55 is considered real signal.
@@ -115,8 +109,6 @@ AUC (Area under the Curve) = how well the model ranks winners over losers. 0.50 
 
 The ceiling at ~0.53 isn't a modeling problem — switching to deep learning won't push it meaningfully higher. It's an information problem. The features themselves just don't contain much predictive signal. The information has been arbitraged away by professionals who got to it first.
 
----
-
 ## 5. Transaction cost sensitivity
 
 How much do broker fees eat into returns? Realistic retail cost is 5-10 basis points per trade.
@@ -133,8 +125,6 @@ How much do broker fees eat into returns? Realistic retail cost is 5-10 basis po
 - **PEAD (longer holds):** +50% → +46.1%. Barely affected by fees. Longer holding periods are naturally cost-robust because you're not paying the toll as often.
 
 Takeaway: daily trading strategies lose a lot to friction. Longer-horizon strategies survive it. High-turnover daily strategies lose 10-25% of edge at realistic broker costs.
-
----
 
 ## Bottom line
 
