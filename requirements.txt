@@ -1,0 +1,24 @@
+# Core data + ML
+pandas>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+lightgbm>=4.0.0
+hmmlearn>=0.3.0
+joblib>=1.3.0
+scipy>=1.11.0
+
+# Data acquisition
+yfinance>=0.2.30
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Document generation (used only by Step 3 regime comparison report)
+python-docx>=1.0.0
+
+# Paper trading (used only by Step 8)
+alpaca-py>=0.13.0
