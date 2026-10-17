@@ -14,7 +14,7 @@ I went through roughly five rounds of iteration.
 
 **Round 1 — the original build.** Scraped S&P 500 prices, computed 15 technical indicators, clustered tickers into groups, trained a Random Forest per cluster with GridSearchCV, backtested the top-10 predictions with a fixed 7-day hold. Hit rates in the 65-75% range on the test set. Looked great. I nearly stopped here.
 
-**Round 2 — the rebuild and bug hunt.** Rewriting everything with proper time-series methodology turned up multiple problems. The Stochastic %D indicator was being computed without a `groupby('Ticker')` call, which meant rolling means leaked across ticker boundaries — the last five rows of AAPL polluted the first five of MSFT. Subtle but real contamination inflating CV AUC. The target formula compared future close to today's open, but my indicators used today's close, which is a small implicit lookahead. The train/test split used `iloc[:split_index]`, which can cut through the middle of a date with 500 stocks per day. The data scraper had `start="2026-04-01"` hardcoded. I fixed all of these, switched to LightGBM with proper calibration, added purged splits with a 6-day embargo matching the target horizon, and built walk-forward validation across three historical periods.
+**Round 2 — the rebuild and bug fix.** Rewriting everything with proper time-series methodology turned up multiple problems. The Stochastic %D indicator was being computed without a `groupby('Ticker')` call, which meant rolling means leaked across ticker boundaries — the last five rows of AAPL polluted the first five of MSFT. Subtle but real contamination inflating CV AUC. The target formula compared future close to today's open, but my indicators used today's close, which is a small implicit lookahead. The train/test split used `iloc[:split_index]`, which can cut through the middle of a date with 500 stocks per day. The data scraper had `start="2026-04-01"` hardcoded. I fixed all of these, switched to LightGBM with proper calibration, added purged splits with a 6-day embargo matching the target horizon, and built walk-forward validation across three historical periods.
 
 The honest CV AUC after fixes was 0.51 — essentially random. Walk-forward mean Sharpe was 1.06 but with huge variance across folds.
 
@@ -28,7 +28,7 @@ At this point the conclusion was unambiguous.
 
 ## Technical lessons
 
-The two most impactful bugs weren't dramatic — they were silent. They inflated CV AUC by about 9 percentage points. If I'd deployed the pre-fix model to real money, I'd have been trading on phantom signals. In financial ML, assume every impressive result is leakage until you've systematically audited for it.
+The two most impactful bugs were silent. They inflated CV AUC by about 9 percentage points. If I'd deployed the pre-fix model to real money, I'd have been trading on phantom signals. In financial ML, assume every impressive result is leakage until you've systematically checked for it.
 
 Walk-forward validation is non-negotiable. The single test window showed +28% CAGR with Sharpe 1.91. The walk-forward across three historical periods showed mean Sharpe 0.70 with one fold losing 22%. Any backtest result from one time window is almost worthless.
 
@@ -44,7 +44,7 @@ Market efficiency is real in a practical sense, not just an academic theory. Aft
 
 Alpha decays as information spreads. The strategies that worked in academic papers from the 1990s have decayed to near-zero excess returns in the 2020s. Once published, they're arbitraged. Factor ETFs commoditized the easy wins.
 
-The surviving edges live in capacity-limited corners big funds can't fit into: small/mid caps, illiquid names, short-dated specific options, specific event windows. These remain accessible to retail by nature of being too small for institutions.
+The surviving advantages live in capacity-limited strategies big funds can't fit into: small/mid caps, illiquid names, short-dated specific options, specific event windows. These remain accessible to retail by nature of being too small for institutions.
 
 Opportunity cost of not being long is often higher than you think. The 2018-2026 window was one of the strongest 8-year equity returns in history. Any active strategy that keeps capital in cash periodically gives up massive opportunity cost that no amount of alpha-generation makes up for.
 
