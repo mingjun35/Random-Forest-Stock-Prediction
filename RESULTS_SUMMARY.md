@@ -19,19 +19,19 @@ Headline numbers for every variant tested. See `PROJECT_SYNTHESIS.md` for contex
 
 **SPY buy-and-hold** — Do nothing. Buy the index, sit on it. +17.6%/yr. This is the thing to beat.
 
-**Step 6b (fixed 7-day hold)** — Model says buy → hold exactly 7 days → sell no matter what. Mechanical. 1,814 trades, won 59% of the time.
+- **Step 6b (fixed 7-day hold)** — Model says buy → hold exactly 7 days → sell no matter what. Mechanical. 1,814 trades, won 59% of the time.
 
-**Step 6b (threshold 0.75)** — Same as above but only trade when model is at least 75% confident. Pickier = fewer trades, better hit rate.
+- **Step 6b (threshold 0.75)** — Same as above but only trade when model is at least 75% confident. Pickier = fewer trades, better hit rate.
 
-**Step 6b (threshold 0.80)** — Even pickier (≥80% confidence). Only 474 trades, +59% per year. Looks amazing but it's basically 3 lucky mega-winners — walk-forward later confirmed this.
+- **Step 6b (threshold 0.80)** — Even pickier (≥80% confidence). Only 474 trades, +59% per year. Looks amazing but it's basically 3 lucky mega-winners — walk-forward later confirmed this.
 
-**Step 6d (flexible exit)** — Dumped the fixed 7-day rule. Instead exits when any of: stop-loss hits, take-profit hits, trailing stop hits, model changes its mind, or 14-day timer runs out. Returns dipped slightly but drawdown halved.
+- **Step 6d (flexible exit)** — Dumped the fixed 7-day rule. Instead exits when any of: stop-loss hits, take-profit hits, trailing stop hits, model changes its mind, or 14-day timer runs out. Returns dipped slightly but drawdown halved.
 
-**Step 6d (tuned stops)** — Same flexible exit but with tighter stop-losses and wider trailing stops. Best risk-adjusted result (Sharpe 1.91).
+- **Step 6d (tuned stops)** — Same flexible exit but with tighter stop-losses and wider trailing stops. Best risk-adjusted result (Sharpe 1.91).
 
-**Step 6e (confluence, 5 filters)** — Only trade when the model AND market trend AND stock trend AND volatility AND RSI all agree. Backfired. The filter kept selecting false signals.
+- **Step 6e (confluence, 5 filters)** — Only trade when the model AND market trend AND stock trend AND volatility AND RSI all agree. Backfired. The filter kept selecting false signals.
 
-**Step 6e (confluence, 2 filters)** — Simplified to 2 filters (market + stock trend). Still worse. The confluence idea itself was flawed, not the number of filters.
+- **Step 6e (confluence, 2 filters)** — Simplified to 2 filters (market + stock trend). Still worse. The confluence idea itself was flawed, not the number of filters.
 
 **The catch:** this window was a straight-up bull market. Any trend-following strategy was going to look good. That's why Section 2 matters.
 
@@ -52,11 +52,11 @@ Folds:
 
 ### What each variant did
 
-**Step 7 (base)** — The 7-day fixed-hold strategy from Section 1, retested properly across 3 periods. Mean Sharpe 0.55, worse than SPY's 0.75. The single-window outstanding results disappeared.
+- **Step 7 (base)** — The 7-day fixed-hold strategy from Section 1, retested properly across 3 periods. Mean Sharpe 0.55, worse than SPY's 0.75. The single-window outstanding results disappeared.
 
-**Step 7d (flexible exit)** — The best single-window performer (Step 6d), retested properly. Mean Sharpe 0.70 — still worse than SPY. Its one virtue: worst fold only lost 2.4%, so good risk control even when returns stink.
+- **Step 7d (flexible exit)** — The best single-window performer (Step 6d), retested properly. Mean Sharpe 0.70 — still worse than SPY. Its one virtue: worst fold only lost 2.4%, so good risk control even when returns stink.
 
-**Step 7e (confluence filter)** — Mean Sharpe 0.70 looks okay, but worst fold lost 21.8%. The filter made the bear market worse. During 2021-22, "all signals agree" setups were bull-trap patterns that got crushed.
+- **Step 7e (confluence filter)** — Mean Sharpe 0.70 looks okay, but worst fold lost 21.8%. The filter made the bear market worse. During 2021-22, "all signals agree" setups were bull-trap patterns that got crushed.
 
 **In plain English:** every strategy that looked great in Section 1 fell apart when tested across different market conditions. The single-window numbers were influenced by the bull-market, not a real edge.
 
