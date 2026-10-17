@@ -63,10 +63,4 @@ After fixes, honest CV AUC is ~0.51. Adding more features (sector, VIX, ranks, i
 
 ## What I'd use instead
 
-For retail capital at this scale, buy-and-hold VTI with dollar-cost averaging beats every active variant I tested. The capacity-limited active strategies that still work (volatility selling on quality stocks, small-cap event-driven) require different infrastructure than this project.
-
-## License
-
-MIT. Build on it however you want.
-
-— MJ Lee (leemingjun12@gmail.com)
+For retail capital at this scale, buy-and-hold ETFs with dollar-cost averaging beats every active variant I tested. The capacity-limited active strategies that still work (volatility selling on quality stocks, small-cap event-driven) require different infrastructure than this project.
