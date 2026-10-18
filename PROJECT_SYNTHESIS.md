@@ -20,15 +20,15 @@ The honest CV AUC after fixes was 0.51 — essentially random. Walk-forward mean
 
 **Round 3 — feature engineering.** Added sector-relative momentum, VIX, and cross-sectional ranks. CV AUC moved from 0.51 to 0.53. VIX dominated feature importance but didn't move actual predictive power meaningfully. The information was partially redundant with what the regime model already captured.
 
-**Round 4 — risk management.** Instead of trying to extract more alpha from the model, I shifted to execution. Added ATR-based stop-loss, take-profit, trailing stop, time stop, and lost-conviction exits. Single-window Sharpe jumped from 1.42 to 1.91, max drawdown halved. Then tried confluence filters (only trade when multiple signals agree) — and in walk-forward this made the bear market fold go from -2.4% to -22%. The filter kept selecting bull-trap setups during the 2021-22 bear.
+**Round 4 — risk management.** Instead of trying to extract more alpha from the model, I shifted to execution. Added ATR-based stop-loss, take-profit, trailing stop, time stop, and lost-conviction exits. Single-window Sharpe jumped from 1.42 to 1.91, max drawdown halved. Then tried confluence filters (only trade when multiple signals agree), and in walk-forward this made the bear market fold go from -2.4% to -22%. The filter kept selecting bull-trap setups during the 2021-22 bear.
 
-**Round 5 — alternative approaches.** Scraped SEC EDGAR Form 4 insider transactions as alternative data. CV AUC stayed at 0.53. Tried Post-Earnings Announcement Drift (PEAD) as a completely different strategy — 70% hit rate but overall Sharpe of 0.31 because of opportunity cost versus a bull market SPY was crushing. Walk-forward mean Sharpe for PEAD was 0.04.
+**Round 5 — alternative approaches.** Scraped SEC EDGAR Form 4 insider transactions as alternative data. CV AUC stayed at 0.53. Tried Post-Earnings Announcement Drift (PEAD) as a completely different strategy, 70% hit rate but overall Sharpe of 0.31 because sitting in cash between earnings events gave up too much ground to a bull-market SPY. Walk-forward mean Sharpe for PEAD was 0.04.
 
 At this point the conclusion was unambiguous.
 
 ## Technical lessons
 
-The two most impactful bugs were silent. They inflated CV AUC by about 9 percentage points. If I'd deployed the pre-fix model to real money, I'd have been trading on phantom signals. In financial ML, assume every impressive result is leakage until you've systematically checked for it.
+The two most impactful bugs were silent. They inflated CV AUC by about 9 percentage points. If I'd deployed the pre-fix model to real money, I'd have been trading on fake signals. In financial ML, assume every impressive result is leakage until you've systematically checked for it.
 
 Walk-forward validation is non-negotiable. The single test window showed +28% CAGR with Sharpe 1.91. The walk-forward across three historical periods showed mean Sharpe 0.70 with one fold losing 22%. Any backtest result from one time window is almost worthless.
 
@@ -40,9 +40,9 @@ Class imbalance needs explicit handling. Bull markets have more up days than dow
 
 ## Market structure lessons
 
-Market efficiency is real in a practical sense, not just an academic theory. After spending months trying to find alpha and failing, you internalize that the market is efficient enough that retail-accessible features on liquid stocks don't contain extractable signal.
+Market efficiency is real in a practical sense, not just an academic theory. After spending months trying to find alpha and failing, you internalise that the market is efficient enough that retail-accessible features on liquid stocks don't contain extractable signal.
 
-Alpha decays as information spreads. The strategies that worked in academic papers from the 1990s have decayed to near-zero excess returns in the 2020s. Once published, they're arbitraged. Factor ETFs commoditized the easy wins.
+Alpha decays as information spreads. The strategies that worked in academic papers from the 1990s have decayed to near-zero excess returns in the 2020s. Once published, they're arbitraged. Factor ETFs commoditised the easy wins.
 
 The surviving advantages live in capacity-limited strategies big funds can't fit into: small/mid caps, illiquid names, short-dated specific options, specific event windows. These remain accessible to retail by nature of being too small for institutions.
 
@@ -54,45 +54,29 @@ Test for signal before building infrastructure. A 5-line correlation test betwee
 
 Start with logistic regression as baseline. It's a one-liner, trains in seconds, and tells you immediately if there's signal above random.
 
-Benchmark against SPY from day one. I didn't start comparing to buy-and-hold until Step 6c. If I had, I'd have realized by Step 2 that even my best variants were underperforming the index.
+Benchmark against SPY from day one. I didn't start comparing to buy-and-hold until Step 6c. If I had, I'd have realised by Step 2 that even my best variants were underperforming the index.
 
 Use purged time-split and walk-forward from the start. I used naive splitting initially. By the time I rewrote everything with proper validation, I had to throw out weeks of apparently-promising results.
 
 Pivot to a different problem sooner. I spent too long trying to fix the directional prediction problem. The right pivot was earlier: cross-sectional ranking instead of binary classification, or shift to small/mid cap universe, or move to vol-selling entirely.
 
-## Where retail alpha actually lives
+## Where I’m putting my own money
 
-Based on everything learned, my honest tier list from most to least promising for retail:
-
-**Volatility risk premium (selling cash-secured puts on quality stocks).** Insurance premiums are structural. Realistic Sharpe 1.0-1.3. Scales to retail account sizes.
-
-**Index investing with factor tilts.** Not alpha but captures risk premia at near-zero cost. Realistic edge over market 1-3% per year. Unlimited capacity.
-
-**Sector rotation (ETF momentum).** Slow institutional flows plus behavioral under/over-reaction. Realistic Sharpe 0.7-0.9.
-
-**Short squeeze hunting on Russell 2000 small caps.** Mechanical short-covering is real. Capacity-limited to small caps. High variance.
-
-**Post-earnings drift on small/mid caps.** Behavioral underreaction, less arbitraged than large caps. PEAD on S&P 500 didn't work in my tests but small-cap PEAD may still have edge.
-
-**Insider cluster buying.** Insiders know things. Signal is weak but real.
-
-Things to probably avoid: options spreads (positive expected value doesn't help if a tail event wipes you out), crypto momentum (regulatory risk + extreme volatility), and the thing I spent months on — technical indicator ML on daily S&P 500 equities, which is empirically dead.
+After all of this, my honest conclusion is simple: buy ETFs, hold, contribute monthly (DCA).
 
 ## Personal takeaway
 
-Six things I now believe that I didn't before this project:
+Five things I now believe that I didn't before this project:
 
-The hardest skill in quant isn't modeling — it's falsifying your own hypothesis. I spent weeks believing I had a +28% CAGR strategy. Walk-forward told me it was mostly luck. Most retail traders never do walk-forward and never find out.
+The hardest skill in quant isn't modeling, it's falsifying your own hypothesis. I spent weeks believing I had a +28% CAGR strategy. Walk-forward told me it was mostly luck. Most retail traders never do walk-forward and never find out.
 
 Negative results are more valuable than positive ones when properly validated. A rigorously validated "this doesn't work" is a permanent protection against future wasted effort. A positive result from one backtest is a trap.
 
-The simplest strategy — buy VTI, hold, contribute monthly — beats 95% of what I can build. This isn't defeat. It's realism. The market is efficient enough that trying to outsmart it is a losing proposition for retail.
+The simplest strategy — buy ETFs, hold, contribute monthly — beats 95% of what I can build. This isn't defeat. It's realism. The market is efficient enough that trying to outsmart it is a losing proposition for retail.
 
 Information edge beats modeling edge. If 10,000 people have the same features and the same models, nobody has edge. The surviving edges live in information other people don't have.
 
-Capacity constraints are features, not bugs. The reason small-cap PEAD might still work is that it's too small for big funds. If a strategy is both easy to find AND scales to billions, it's already arbitraged.
-
-The best thing I built isn't a model — it's an experimental method. The pipeline, the validation discipline, the walk-forward tests, the willingness to accept negative results. The specific model is just one application of them.
+The best thing I built isn't a model, it's an experimental method. The pipeline, the validation discipline, the walk-forward tests, the willingness to accept negative results. The specific model is just one application of them.
 
 ## Closing
 
@@ -100,8 +84,6 @@ If someone reads this project and takes away "machine learning on stocks doesn't
 
 The point is: ML on this specific problem (daily directional prediction of S&P 500 stocks from technical indicators) doesn't work, because the information has been arbitraged away. ML works brilliantly in domains where the information hasn't been arbitraged away.
 
-Going forward I'm putting the bulk of my capital in VTI with monthly contributions, learning options income strategies for an income sleeve, keeping a small speculation sleeve for ongoing experimentation, and carrying the methodological discipline from this project into any future quantitative work.
-
-The project was never going to make me rich. It was always going to make me wiser about what's possible. On that measure, it succeeded.
+Going forward I’m putting the bulk of my capital in ETFs with monthly contributions, and carrying the methodological discipline from this project into any future quantitative work.
 
 — MJ Lee, 2026
